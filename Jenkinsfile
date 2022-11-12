@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Submit Stack') {
             steps {
-            sh "aws cloudformation create-stack --template-body=file://ai--vm-and-db-autoscal-stack.yml --stack-name=Total-ai2-vm-and-db-stack"
+            sh "aws cloudformation create-stack --template-body=file://ai--vm-and-db-autoscal-stack.yml --region='us-east-2' --stack-name=Total-ai2-vm-and-db-stack"
               }
              }
             }
