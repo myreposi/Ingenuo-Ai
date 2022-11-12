@@ -140,7 +140,7 @@ Resources:
       BackupRetentionPeriod: 0 # default: 1
       CopyTagsToSnapshot: true # default: false
       DBInstanceClass: db.t2.micro
-      DBInstanceIdentifier: usermanagerdb
+      DBInstanceIdentifier: aiusermanagerdb
       DBName: 'AiUserManagerDB'
       DBSubnetGroupName: 'DBSubnetGroupA'
       Engine: 'mysql'
