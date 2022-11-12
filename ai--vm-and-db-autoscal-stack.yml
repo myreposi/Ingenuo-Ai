@@ -2,16 +2,16 @@ Parameters:
   InfrastructureStackName:
     Description: Name of the base infrastructure stack
     Type: String
-    Default: infrastructure
+    Default: VPC-ai2-infra
   DBPass:
     Type: String
     Default: "admin123"
   Region:
     Type: String
-    Default: 'eu-central-1'
+    Default: 'us-east-2'
 
 AWSTemplateFormatVersion: '2010-09-09'
-Description: "VM and DB stack"
+Description: "VM and DB stack provisioning"
 Resources:
   BackendLaunchTemplate:
     Type: AWS::EC2::LaunchTemplate
@@ -22,9 +22,9 @@ Resources:
           - DeviceName: '/dev/sda1'
             Ebs:
               VolumeSize: 8 # in GB
-        ImageId: 'ami-03c3a7e4263fd998c' # Amazon Linux 2 AMI (64-bit x86)
-        InstanceType: 't3.micro'  # TODO: only t2.micro is free tier eligible
-        KeyName: 'eu-stackdemo-keypair' # TODO: Might be disabled when System Manager is configured
+        ImageId: 'ami-089a545a9ed9893b6' # Amazon Linux 2 AMI (64-bit x86)
+        InstanceType: 't2.micro'  #  free tier eligible
+        KeyName: 'Demo-Test-Key-Pair' # TODO: Might be disabled when System Manager is configured
         SecurityGroupIds:
           - !Ref ServerSecurityGroup
 
@@ -38,7 +38,7 @@ Resources:
       LaunchTemplate:
         LaunchTemplateId: !Ref BackendLaunchTemplate
         Version: 1
-      MaxSize: 3
+      MaxSize: 2
       MinSize: 1
       TargetGroupARNs:
         - !Ref ServerTG
@@ -57,9 +57,9 @@ Resources:
           - DeviceName: '/dev/sda1'
             Ebs:
               VolumeSize: 8 # in GB
-        ImageId: 'ami-03c3a7e4263fd998c' # Amazon Linux 2 AMI (64-bit x86)
-        InstanceType: 't3.micro'  # TODO: only t2.micro is free tier eligible
-        KeyName: 'eu-stackdemo-keypair'
+        ImageId: 'ami-089a545a9ed9893b6' # Amazon Linux 2 AMI (64-bit x86)
+        InstanceType: 't2.micro'  # freetier
+        KeyName: 'Demo-Test-Key-Pair'
         SecurityGroupIds:
           - !Ref ClientSecurityGroup
 
@@ -73,8 +73,8 @@ Resources:
       LaunchTemplate:
         LaunchTemplateId: !Ref FrontendLaunchTemplate
         Version: 1
-      MaxSize: 4
-      MinSize: 2
+      MaxSize: 2
+      MinSize: 1
       TargetGroupARNs:
         - !Ref ClientTG
       VPCZoneIdentifier:
@@ -137,12 +137,12 @@ Resources:
     Type: AWS::RDS::DBInstance
     Properties:
       AllocatedStorage: 20
-      BackupRetentionPeriod: 7 # default: 1
+      BackupRetentionPeriod: 0 # default: 1
       CopyTagsToSnapshot: true # default: false
       DBInstanceClass: db.t2.micro
-      DBInstanceIdentifier: mysqlusermanagerdb
-      DBName: 'MySqlUserManagerDB'
-      DBSubnetGroupName: 'DBSubnetGroup'
+      DBInstanceIdentifier: usermanagerdb
+      DBName: 'AiUserManagerDB'
+      DBSubnetGroupName: 'DBSubnetGroupA'
       Engine: 'mysql'
       EngineVersion: '8.0.27'
       LicenseModel: 'general-public-license'
@@ -158,8 +158,8 @@ Resources:
   DBSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
     Properties:
-      DBSubnetGroupDescription: "DBSubnetGroup for RDS MySql instance"
-      DBSubnetGroupName: DBSubnetGroup
+      DBSubnetGroupDescription: "DBSubnetGroupA for RDS MySql instance"
+      DBSubnetGroupName: DBSubnetGroupA
       SubnetIds:
         - Fn::ImportValue:
             Fn::Sub: "${InfrastructureStackName}-PrivSubnetA"
@@ -170,7 +170,7 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: 'DB security group'
-      GroupName: 'UserManagerDBSg'
+      GroupName: 'AiUserManagerDBSg'
       SecurityGroupIngress:
         - SourceSecurityGroupId: !Ref ServerSecurityGroup
           IpProtocol: TCP
@@ -181,7 +181,7 @@ Resources:
           IpProtocol: -1 # Allow all
       Tags:
         - Key: 'Name'
-          Value: 'UserManagerDBSg'
+          Value: 'AiUserManagerDBSg'
       VpcId:
         Fn::ImportValue:
           Fn::Sub: "${InfrastructureStackName}-VpcId"
@@ -281,3 +281,4 @@ Resources:
       LoadBalancerArn: !Ref LoadBalancer
       Port: 8080
       Protocol: "HTTP"
+
