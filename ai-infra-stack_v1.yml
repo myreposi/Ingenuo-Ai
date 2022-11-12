@@ -130,7 +130,7 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       AvailabilityZone: !Sub '${Region}b'
-      CidrBlock: 10.0.3.0/24
+      CidrBlock: 13.0.3.0/24
       Tags:
         - Key: 'Name'
           Value: 'PrivSubnetB'
