@@ -1,7 +1,7 @@
 Parameters:
   Region:
     Type: String
-    Default: 'us-west-2'
+    Default: 'us-east-2'
 
 AWSTemplateFormatVersion: '2010-09-09'
 Description: "AWS infra scaffolding"
@@ -9,7 +9,7 @@ Resources:
   UserManagementVpc:
     Type: AWS::EC2::VPC
     Properties:
-      CidrBlock: "10.0.0.0/22"
+      CidrBlock: "13.0.0.0/22"
       Tags:
         - Key: "Name"
           Value: "UserManagementVpc"
@@ -60,7 +60,7 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       AvailabilityZone: !Sub '${Region}a'
-      CidrBlock: 10.0.0.0/24
+      CidrBlock: 13.0.0.0/24
       Tags:
         - Key: 'Name'
           Value: 'PubSubnetA'
@@ -70,7 +70,7 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       AvailabilityZone: !Sub '${Region}a'
-      CidrBlock: 10.0.1.0/24
+      CidrBlock: 13.0.1.0/24
       Tags:
         - Key: 'Name'
           Value: 'PrivSubnetA'
@@ -120,7 +120,7 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       AvailabilityZone: !Sub '${Region}b'
-      CidrBlock: 10.0.2.0/24
+      CidrBlock: 13.0.2.0/24
       Tags:
         - Key: 'Name'
           Value: 'PubSubnetB'
