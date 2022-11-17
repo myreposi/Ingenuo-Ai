@@ -32,13 +32,13 @@ Resources:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
       AutoScalingGroupName: BackendAutoScalingGroup
-      DesiredCapacity: 2
-      HealthCheckGracePeriod: 5
+      DesiredCapacity: 1
+      HealthCheckGracePeriod: 2
       HealthCheckType: ELB
       LaunchTemplate:
         LaunchTemplateId: !Ref BackendLaunchTemplate
         Version: 1
-      MaxSize: 2
+      MaxSize: 1
       MinSize: 1
       TargetGroupARNs:
         - !Ref ServerTG
@@ -67,13 +67,13 @@ Resources:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
       AutoScalingGroupName: FrontendAutoScalingGroup
-      DesiredCapacity: 2
-      HealthCheckGracePeriod: 5
+      DesiredCapacity: 1
+      HealthCheckGracePeriod: 2
       HealthCheckType: ELB
       LaunchTemplate:
         LaunchTemplateId: !Ref FrontendLaunchTemplate
         Version: 1
-      MaxSize: 2
+      MaxSize: 1
       MinSize: 1
       TargetGroupARNs:
         - !Ref ClientTG
