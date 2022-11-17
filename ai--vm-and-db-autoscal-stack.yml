@@ -2,7 +2,7 @@ Parameters:
   InfrastructureStackName:
     Description: Name of the base infrastructure stack
     Type: String
-    Default: VPC-ai2-infra
+    Default: ai-vpc-infra-stack
   DBPass:
     Type: String
     Default: "admin123"
