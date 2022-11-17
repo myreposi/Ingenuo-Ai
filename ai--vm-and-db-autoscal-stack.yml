@@ -33,7 +33,7 @@ Resources:
     Properties:
       AutoScalingGroupName: BackendAutoScalingGroup
       DesiredCapacity: 1
-      HealthCheckGracePeriod: 2
+      HealthCheckGracePeriod: 5
       HealthCheckType: ELB
       LaunchTemplate:
         LaunchTemplateId: !Ref BackendLaunchTemplate
@@ -68,7 +68,7 @@ Resources:
     Properties:
       AutoScalingGroupName: FrontendAutoScalingGroup
       DesiredCapacity: 1
-      HealthCheckGracePeriod: 2
+      HealthCheckGracePeriod: 5
       HealthCheckType: ELB
       LaunchTemplate:
         LaunchTemplateId: !Ref FrontendLaunchTemplate
